@@ -7,7 +7,7 @@ on:
 
 jobs:
   check_for_relevant_changes:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, x64]
     outputs:
       shouldRun: ${{ steps.check_changes.outputs.shouldRun }}
     steps:
@@ -35,7 +35,7 @@ jobs:
         os: ['ubuntu-latest']
         node_version: [lts/*]
       fail-fast: false
-    runs-on: ${{ matrix.os }}
+    runs-on: "${{ (matrix.os) == 'ubuntu-latest' && fromJSON('[\"self-hosted\",\"linux\",\"x64\"]') || (matrix.os) }}"
     env:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     defaults:
